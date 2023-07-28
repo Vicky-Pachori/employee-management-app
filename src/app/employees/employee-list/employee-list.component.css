@@ -1,0 +1,21 @@
+
+.employee-list-bar{
+    background-color: #1DA1F2 !important;
+    .navbar-brand{
+        color: white;
+    }
+}
+
+.employee-form{
+    margin: 20px;
+}
+
+.btn-light{
+    margin-right: 20px;
+}
+
+a.list-group-item.list-group-item-action.active {
+    background-color: transparent;
+    border: transparent;
+    color: black;
+}

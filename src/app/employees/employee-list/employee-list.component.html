@@ -1,0 +1,105 @@
+<nav class="employee-list-bar navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <label class="navbar-brand">{{addFlag === true && updateFlag === true ? 'Update Employee':addFlag === true && updateFlag === false ? 'Add Employee' :  'Employee List'}}</label>
+    </div>
+</nav>
+<form class="employee-form" *ngIf="addFlag">
+    <div class="input-group mb-3">
+        <span class="input-group-text employee-name" id="inputGroup-sizing-default"><i class="bi bi-person"></i></span>
+        <input id=fullName type="text" placeholder="Full Name" name="fullName" (keyup)="getName($event)" class="form-control"
+            aria-label="Fill Name" [(ngModel)]="fullNameValue" aria-describedby="inputGroup-sizing-default">
+    </div>
+    <div class="input-group mb-3">
+        <label class="input-group-text" for="inputGroupSelect01"><i class="bi bi-bag"></i></label>
+        <select class="form-select" name="role"  [(ngModel)]="roleValue" (change)="roleChange($event)" id="inputGroupSelect01">
+            <option selected>Select Role</option>
+            <option value="Product Designer">Product Designer</option>
+            <option value="Flutter Developer">Flutter Developer</option>
+            <option value="QA Tester">QA Tester</option>
+            <option value="Product Owner">Product Owner</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <div class="col-12">
+            <!-- <ng-template #first let-dp>
+                <div class="p-2">
+                    <div class="btn-group d-flex justify-content-end mb-2" role="group">
+                        <button type="button" class="btn btn-sm btn-outline-primary" (click)="model1 = today">Today</button>
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template #second let-ds>
+                <div class="p-2">
+                    <div class="btn-group d-flex justify-content-end mb-2" role="group">
+                        <button type="button" class="btn btn-sm btn-outline-primary" (click)="model2 = today">Today</button>
+                    </div>
+                </div>
+            </ng-template> -->
+            <form class="row row-cols-sm-auto">
+                <div class="col-6">
+                    <div class="input-group">
+                        <input class="form-control" placeholder="dd/mm/yyyy" name="d1" #c1="ngModel"
+                            [(ngModel)]="model1" ngbDatepicker #d1="ngbDatepicker" />
+                        <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d1.toggle()"
+                            type="button"></button>
+                    </div>
+                </div>
+                <i class="bi bi-arrow-right"></i>
+                <div class="col-6">
+                    <div class="input-group">
+                        <input class="form-control" placeholder="dd/mm/yyyy" name="d2" #c2="ngModel"
+                            [(ngModel)]="model2" ngbDatepicker #d2="ngbDatepicker" />
+                        <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d2.toggle()"
+                            type="button"></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="mb-3 mt-3 col-12" style="text-align-last: right;">
+            <button type="submit" class="btn btn-light" (click)="addFlag = !addFlag">Cancel</button>
+            <button *ngIf="!updateFlag" type="submit" class="btn btn-primary" (click)="saveEmployeeData()">Save</button>
+            <button *ngIf="updateFlag" type="submit" class="btn btn-primary" (click)="updateButton()">Update</button>
+        </div>
+
+    </div>
+
+</form>
+<div *ngIf="employeeList.length && !addFlag">
+    <h2 style="background-color: lightgrey;">Current Employees</h2>
+    <div class="list-group" *ngFor="let emp of employeeList">
+        <ng-container *ngIf="!emp.toDate">
+            <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{emp.name}}</h5>
+                    <small (click)="updateEmp(emp.key)">Update</small>
+                    <small (click)="deleteEmpData(emp.key)"><i class="bi bi-trash3"></i></small>
+                </div>
+                <p class="mb-1">{{emp.role}}</p>
+                <small>From {{emp.fromDate.replaceAll('-','/')}}</small>
+            </a>
+        </ng-container>
+
+    </div>
+    <h2 style="background-color: lightgrey;">Previous Employees</h2>
+    <div class="list-group" *ngFor="let emp of employeeList">
+        <ng-container *ngIf="emp.toDate">
+            <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{emp.name}}</h5>
+                    <small (click)="updateEmp(emp.key)">Update</small>
+                    <small (click)="deleteEmpData(emp.key)"><i class="bi bi-trash3"></i></small>
+                </div>
+                <p class="mb-1">{{emp.role}}</p>
+                <small>{{emp.fromDate.replaceAll('-','/')}} - {{emp.toDate.replaceAll('-','/')}}</small>
+            </a>
+        </ng-container>
+
+    </div>
+</div>
+<div *ngIf="!employeeList.length && !addFlag">
+    <h1>No data  - Add Employees</h1>
+</div>
+
+<div *ngIf="!addFlag" class="m-3">
+    <button style="float: right; " class="btn btn-primary" (click)="addNewEmp()"><i class="bi bi-plus"></i></button>
+</div>
